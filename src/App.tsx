@@ -49,7 +49,10 @@ export default function App() {
   };
 
   const handleDeleteRow = (id: number) => {
-    axios.delete(`http://localhost:3000/api/car/${id}`);
+    const confirmation = window.confirm(`Confirm deletion of ${id}?`);
+    if (confirmation) {
+      axios.delete(`http://localhost:3000/api/car/${id}`);
+    }
   };
 
   return (
