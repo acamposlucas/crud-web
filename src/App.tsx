@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import axios from "axios";
+import { EditDialogForm } from "./components/EditDialogForm";
 
 interface Car {
   id: number;
@@ -16,6 +17,7 @@ export default function App() {
   const [cars, setCars] = useState<Car[]>([]);
   const formData: IFormDataType = { model: "", license_plate: "" };
   const [responseBody, setResponseBody] = useState<IFormDataType>(formData);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     axios
@@ -105,19 +107,29 @@ export default function App() {
                 <td>{id}</td>
                 <td>{license_plate}</td>
                 <td>{model}</td>
-                <td>
+                <td className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => handleDeleteRow(id)}
-                    className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+                    className="w-16 rounded-md bg-red-500 py-1 text-white hover:bg-red-600"
                   >
                     Delete
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsOpen(true)}
+                    className="w-16 rounded-md bg-blue-500 py-1 text-white hover:bg-blue-600"
+                  >
+                    Edit
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {isOpen ? (
+          <EditDialogForm isOpen={isOpen} setIsOpen={setIsOpen} />
+        ) : null}
       </div>
     </div>
   );
