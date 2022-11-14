@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from "react";
-import { Car } from "../App";
+import { Car } from "../interfaces/ICar";
 import { X } from "./Icons/X";
 
 interface IEditDialogForm {
