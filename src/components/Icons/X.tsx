@@ -25,9 +25,9 @@ export function X({
         y2="200"
         fill="none"
         stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="12"
       ></line>
       <line
         x1="200"
@@ -36,9 +36,9 @@ export function X({
         y2="56"
         fill="none"
         stroke="#1a1919"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="12"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="12"
       ></line>
     </svg>
   );

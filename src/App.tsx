@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { EditDialogForm } from "./components/EditDialogForm";
 
-interface Car {
+export interface Car {
   id: number;
   model: string;
   license_plate: string;
@@ -32,22 +32,14 @@ export default function App() {
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(responseBody);
 
-    axios
-      .post("http://localhost:3000/api/car", responseBody, {
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-          Accept: "Token",
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    axios.post("http://localhost:3000/api/car", responseBody, {
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        Accept: "Token",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
   };
 
   const handleDeleteRow = (id: number) => {
@@ -55,6 +47,12 @@ export default function App() {
     if (confirmation) {
       axios.delete(`http://localhost:3000/api/car/${id}`);
     }
+  };
+
+  const handleGetRowById = (id: number) => {
+    axios
+      .get(`http://localhost:3000/api/car/${id}`)
+      .then((res) => console.log(res.data.result));
   };
 
   return (
@@ -122,14 +120,18 @@ export default function App() {
                   >
                     Edit
                   </button>
+                  {isOpen ? (
+                    <EditDialogForm
+                      isOpen={isOpen}
+                      setIsOpen={setIsOpen}
+                      id={id}
+                    />
+                  ) : null}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {isOpen ? (
-          <EditDialogForm isOpen={isOpen} setIsOpen={setIsOpen} />
-        ) : null}
       </div>
     </div>
   );
