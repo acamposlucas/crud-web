@@ -32,15 +32,15 @@ export function Table() {
         </tr>
       </thead>
       <tbody>
-        {cars.map(({ id, license_plate, model }) => (
-          <tr key={id}>
-            <td>{id}</td>
-            <td>{license_plate}</td>
-            <td>{model}</td>
+        {cars.map((car) => (
+          <tr key={car.id}>
+            <td>{car.id}</td>
+            <td>{car.license_plate}</td>
+            <td>{car.model}</td>
             <td className="flex gap-2">
               <button
                 type="button"
-                onClick={() => handleDeleteRow(id)}
+                onClick={() => handleDeleteRow(car.id)}
                 className="w-16 rounded-md bg-red-500 py-1 text-white hover:bg-red-600"
               >
                 Delete
@@ -53,7 +53,11 @@ export function Table() {
                 Edit
               </button>
               {isOpen ? (
-                <EditDialogForm isOpen={isOpen} setIsOpen={setIsOpen} id={id} />
+                <EditDialogForm
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  car={car}
+                />
               ) : null}
             </td>
           </tr>
