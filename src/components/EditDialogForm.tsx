@@ -5,44 +5,37 @@ import { Car } from "../interfaces/ICar";
 import { X } from "./Icons/X";
 
 interface IEditDialogForm {
-  openDialog: (car: Car) => void;
   closeDialog: () => void;
   isOpen: {
     open: boolean;
-    car: { license_plate: string; model: string };
+    car: { id: number; license_plate: string; model: string };
   };
 }
 
-export function EditDialogForm({
-  isOpen,
-  openDialog,
-  closeDialog,
-}: IEditDialogForm) {
+export function EditDialogForm({ isOpen, closeDialog }: IEditDialogForm) {
   const licensePlate = useRef() as MutableRefObject<HTMLInputElement>;
   const carModel = useRef() as MutableRefObject<HTMLInputElement>;
   const form = useRef() as MutableRefObject<HTMLFormElement>;
 
-  console.log(isOpen.car);
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  // const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
+    const data = {
+      license_plate: licensePlate.current.value,
+      model: carModel.current.value,
+    };
 
-  //   const data = {
-  //     license_plate: licensePlate.current.value,
-  //     model: carModel.current.value,
-  //   };
+    axios.put(`http://localhost:3000/api/car/${isOpen.car.id}`, data, {
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        Accept: "Token",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
 
-  //   axios.put(`http://localhost:3000/api/car/${car.id}`, data, {
-  //     headers: {
-  //       "Content-Type": "application/json; charset=UTF-8",
-  //       Accept: "Token",
-  //       "Access-Control-Allow-Origin": "*",
-  //     },
-  //   });
-
-  //   form.current.reset();
-  //   closeDialog();
-  // };
+    form.current.reset();
+    closeDialog();
+  };
 
   return (
     <>
@@ -60,7 +53,7 @@ export function EditDialogForm({
             >
               <X width={32} height={32} />
             </button>
-            <form name="insert" ref={form}>
+            <form name="insert" ref={form} onSubmit={handleFormSubmit}>
               <legend>New Car</legend>
               <div className="flex flex-col gap-2">
                 <div className="flex gap-1">
@@ -70,7 +63,7 @@ export function EditDialogForm({
                     type="text"
                     name="model"
                     id="model"
-                    defaultValue={isOpen.car?.model}
+                    defaultValue={isOpen.car.model}
                     required
                   />
                 </div>
@@ -81,7 +74,7 @@ export function EditDialogForm({
                     type="text"
                     name="license_plate"
                     id="license_plate"
-                    defaultValue={isOpen.car?.license_plate}
+                    defaultValue={isOpen.car.license_plate}
                     required
                   />
                 </div>

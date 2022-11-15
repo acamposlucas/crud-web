@@ -6,6 +6,7 @@ import { EditDialogForm } from "./EditDialogForm";
 export function Table() {
   const [cars, setCars] = useState<Car[]>([]);
   const [selectedCar, setSelectedCar] = useState({
+    id: 0,
     license_plate: "",
     model: "",
   });
@@ -18,7 +19,7 @@ export function Table() {
     axios
       .get("http://localhost:3000/api/cars")
       .then((res) => setCars(res.data.result));
-  }, [cars]);
+  }, []);
 
   const handleDeleteRow = (id: number) => {
     const confirmation = window.confirm(`Confirm deletion of ${id}?`);
@@ -28,11 +29,10 @@ export function Table() {
   };
 
   const openDialog = (car: Car) => {
-    setSelectedCar(car);
-    setIsOpen({ open: true, car: selectedCar });
+    setIsOpen({ open: true, car: car });
   };
   const closeDialog = () => {
-    setSelectedCar({ license_plate: "", model: "" });
+    setSelectedCar({ id: 0, license_plate: "", model: "" });
     setIsOpen({ open: false, car: selectedCar });
   };
 
@@ -73,11 +73,7 @@ export function Table() {
           ))}
         </tbody>
       </table>
-      <EditDialogForm
-        isOpen={isOpen}
-        openDialog={openDialog}
-        closeDialog={closeDialog}
-      />
+      <EditDialogForm isOpen={isOpen} closeDialog={closeDialog} />
     </>
   );
 }
